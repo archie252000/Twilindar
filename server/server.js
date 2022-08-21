@@ -8,7 +8,7 @@ connectDB();
 
 app.use(express.json({ extended: false }));
 
-app.get("/", function(req, res) {
+app.get("/", async(req, res) => {
     res.send("HERE");
 });
 const PORT = process.env.PORT || 5000;

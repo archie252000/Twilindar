@@ -14,3 +14,5 @@ const ThreadSchema = new mongoose.Schema({
         type: Date,
     },
 });
+
+module.exports = Thread = mongoose.model("thread", ThreadSchema);
