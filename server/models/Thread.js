@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const ThreadSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+    },
     tweet: [{
         text: {
             type: String,
