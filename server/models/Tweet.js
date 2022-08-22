@@ -1,17 +1,20 @@
 const mongoose = require("mongoose");
 
 const TweetSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+    },
     text: {
-        type: String
+        type: String,
     },
     time: {
-        type: Date
+        type: Date,
     },
     media: {
         data: Buffer,
-        contentType: String
-
-    }
+        contentType: String,
+    },
 });
 
 module.exports = Tweet = mongoose.model("Tweet", TweetSchema);
