@@ -1,7 +1,12 @@
 const express = require("express");
 const Router = express.Router();
 const User = require("../../models/User");
-Router.post("/", [], async(req, res) => {
+const Request = require("requs")
+
+//  @route  POST api/login
+//  @desc   login user
+//  @access Public
+Router.post("/", async(req, res) => {
 
     const {
         twitterUserId,
@@ -11,7 +16,6 @@ Router.post("/", [], async(req, res) => {
         accessTokenSecret
     } = req.body;
 
-    let user = await User.findOne()
-
+    let user = await User.findOne({ twitterUserId });
 
 });
