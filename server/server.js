@@ -8,9 +8,8 @@ connectDB();
 
 app.use(express.json({ extended: false }));
 
-app.get("/", async(req, res) => {
-    res.send("HERE");
-});
+
+app.use("/api/login", require("./routes/api/login"))
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server has started on port: ${PORT}`));
