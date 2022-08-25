@@ -9,7 +9,7 @@ const auth = async(req, res, next) => {
         const OAuthParams = {
             oauth_consumer_key: config.get("consumer_key"),
             oauth_token: req.body.accessToken,
-            oauth_timestamp: "1661436470",
+            oauth_timestamp: Math.floor(+new Date() / 1000),
             oauth_nonce: genToken(),
             oauth_signature_method: "HMAC-SHA1",
             oauth_version: "1.0"
