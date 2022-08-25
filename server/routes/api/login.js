@@ -3,11 +3,12 @@ const Router = express.Router();
 const User = require("../../models/User");
 const config = require("config")
 const axios = require("axios")
+const auth = require("../../middleware/auth")
 
 //  @route  POST api/login
 //  @desc   login user
 //  @access Public
-Router.post("/", async(req, res) => {
+Router.post("/", [auth], async(req, res) => {
 
     const {
         twitterUserId,
@@ -17,7 +18,7 @@ Router.post("/", async(req, res) => {
         accessTokenSecret
     } = req.body;
 
-
+    return res.data;
 
 });
 
