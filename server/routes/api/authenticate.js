@@ -1,22 +1,18 @@
 const express = require("express");
 const Router = express.Router();
 const User = require("../../models/User");
-const config = require("config")
-const axios = require("axios")
 const auth = require("../../middleware/auth")
 
 //  @route  POST api/login
 //  @desc   login user
-//  @access Public
+//  @access Private
 Router.post("/", [auth], async(req, res) => {
 
-    const {
-        twitterUserId,
-        username,
-        name,
-        accessToken,
-        accessTokenSecret
-    } = req.body;
+    let user = await User.findOne({ id: String(req.userId) }).exec();
+    console.log(req.userId);
+    if (!user) {
+
+    }
 
     return res.data;
 

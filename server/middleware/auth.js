@@ -29,11 +29,10 @@ const auth = async(req, res, next) => {
         const res_twitter = await axios.get(url, Config);
 
 
-        res.json({
-            id: res_twitter.data.id,
-            isAuth: true
+        req.userId = res_twitter.data.id;
+        req.username = res_twitter.data.screen_name;
+        req.name = res_twitter.data.id;
 
-        });
         next();
 
 
