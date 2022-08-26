@@ -15,20 +15,33 @@ const auth = async(req, res, next) => {
             oauth_version: "1.0"
         }
 
-        const oauth_signature = computeOAuthSignature("GET", "https://api.twitter.com/1.1/account/verify_credentials.json", OAuthParams, undefined, req.body.accessTokenSecret);
+        const url = "https://api.twitter.com/1.1/account/verify_credentials.json";
+
+        const oauth_signature = computeOAuthSignature("GET", url, OAuthParams, undefined, req.body.accessTokenSecret);
+
         const Config = {
             headers: {
                 Authorization: `OAuth oauth_consumer_key="${config.get("consumer_key")}",oauth_token="${OAuthParams.oauth_token}",oauth_signature_method="${OAuthParams.oauth_signature_method}",oauth_timestamp="${OAuthParams.oauth_timestamp}",oauth_nonce="${OAuthParams.oauth_nonce}",oauth_version="1.0",oauth_signature="${oauth_signature}"`,
                 'content-Type': 'application/json'
             }
         };
-        const res_twitter = await axios.get("https://api.twitter.com/1.1/account/verify_credentials.json", Config);
-        res.json(res_twitter.data);
+
+        const res_twitter = await axios.get(url, Config);
+
+
+        res.json({
+            id: res_twitter.data.id,
+            isAuth: true
+
+        });
         next();
 
 
     } catch (err) {
-        res.json(err.message);
+        res.json({
+            error: err.message,
+            isAuth: false
+        });
     }
 
 }

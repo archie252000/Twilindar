@@ -6,6 +6,10 @@ const ThreadSchema = new mongoose.Schema({
         ref: "user",
     },
     tweet: [{
+        replyId: {
+            type: String,
+            default: ""
+        },
         text: {
             type: String,
         },
@@ -13,10 +17,10 @@ const ThreadSchema = new mongoose.Schema({
             data: Buffer,
             contentType: String,
         },
+        time: {
+            type: Date,
+        },
     }, ],
-    time: {
-        type: Date,
-    },
 });
 
 module.exports = Thread = mongoose.model("thread", ThreadSchema);
