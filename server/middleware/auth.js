@@ -31,7 +31,7 @@ const auth = async(req, res, next) => {
 
         req.userId = res_twitter.data.id;
         req.username = res_twitter.data.screen_name;
-        req.name = res_twitter.data.id;
+        req.name = res_twitter.data.name;
 
         next();
 

@@ -8,13 +8,18 @@ const auth = require("../../middleware/auth")
 //  @access Private
 Router.post("/", [auth], async(req, res) => {
 
-    let user = await User.findOne({ id: String(req.userId) }).exec();
-    console.log(req.userId);
+    const user = await User.findOne({ twitterUserId: String(req.userId) });
     if (!user) {
+        const user = new User({
+            twitterUserId: String(req.userId),
+            name: req.name,
+            username: req.username
 
+        });
+        user.save();
     }
 
-    return res.data;
+    res.json({ isAuth: true });
 
 });
 
