@@ -13,6 +13,14 @@ const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+    },
+    accessToken: {
+        type: String,
+        required: true
+    },
+    accessTokenSecret: {
+        type: String,
+        required: true
     }
 });
 

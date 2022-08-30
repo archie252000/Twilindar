@@ -10,6 +10,7 @@ const TweetSchema = new mongoose.Schema({
     },
     time: {
         type: Date,
+
     },
     media: {
         data: Buffer,
