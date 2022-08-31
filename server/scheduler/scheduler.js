@@ -1,12 +1,21 @@
 const schedule = require("node-schedule");
 const axios = require("axios");
+const tweetManager = require("./tweet_manager");
+const Tweet = require("../models/Tweet");
 
 const startScheduler = () => {
-    console.log("STARTED");
-    let count = 1;
     return schedule.scheduleJob('*/10 * * * * *', async() => {
-        console.log(count);
-        count++;
+        try {
+            let tweets = await Tweet.find({ time: { $lte: new Date() } });
+
+            tweets.forEach(async(tweet) => {
+                tweetManager.post(tweet);
+                await Tweet.deleteOne({ _id: tweet._id });
+            })
+
+        } catch (err) {
+            console.log(err.message)
+        }
     })
 };
 

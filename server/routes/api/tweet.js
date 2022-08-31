@@ -13,12 +13,19 @@ const schedule = require("node-schedule");
 //  @access Private
 
 Router.post("/", [auth], async(req, res) => {
+    try {
+        const user = await User.findOne({ twitterUserId: String(req.userId) });
 
-    const user = await User.findOne({ twitterUserId: String(req.userId) });
+        const tweets = await Tweet.find({ user: user._id });
 
-    const tweets = await Tweet.find({ user: user._id });
+        res.json({ "tweets": tweets });
+    } catch (err) {
+        res.status(500).send({
+            msg: "Server Error",
+            error: err.message
+        });
 
-    res.json({ "tweets": tweets });
+    }
 
 });
 
@@ -28,25 +35,43 @@ Router.post("/", [auth], async(req, res) => {
 //  @access Private   
 
 Router.post("/schedule", [auth], async(req, res) => {
-    const {
-        text,
-        time,
-        media
-    } = req.body;
+    try {
 
-    const user = await User.findOne({ twitterUserId: req.userId })
+        const {
+            text,
+            time,
+            media
+        } = req.body;
 
-    const tweet = new Tweet({
-        user: user._id,
-        text: text,
-        time: time,
-        media: media
-    });
+        const user = await User.findOne({ twitterUserId: req.userId })
 
-    tweet.save();
+        const tweetData = {};
+
+        tweetData.user = user._id;
+
+        tweetData["time"] = time;
+
+        if (media)
+            tweetData["media"] = media;
+
+        if (text)
+            tweetData["text"] = text;
+
+        console.log(tweetData);
+
+        const tweet = new Tweet(tweetData);
+
+        tweet.save();
 
 
-    res.json({ scheduled: true });
+        res.json({ scheduled: true });
+
+    } catch (err) {
+        res.status(500).send({
+            msg: "Server Error",
+            error: err.message
+        });
+    }
 })
 
 

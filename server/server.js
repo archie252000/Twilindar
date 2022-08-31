@@ -1,12 +1,12 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const startScheduler = require("./scheduler/scheduler");
-const test = require("./utils/crypt")
 
 const app = express();
 
 // connect to database
 connectDB();
+startScheduler();
 
 app.use(express.json({ extended: false }));
 
