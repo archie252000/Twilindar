@@ -11,15 +11,20 @@ const post = async(body) => {
         const user = await User.findById(body.user);
         const accessToken = crypt.decrypt(String(user.accessToken));
         const accessTokenSecret = crypt.decrypt(String(user.accessTokenSecret));
-        console.log(accessToken);
 
         data = {};
 
-        if (body["text"])
-            data["text"] = body["text"];
+        if (body.text)
+            data.text = body.text;
 
-        // if (body["media"] && Object.keys(body["media"]).length !== 0)
-        //     data["media"] = body["media"];
+        if (body.media && Object.keys(body.media).length === 0)
+            data.media = body.media;
+
+        if (body.replyId && body.replyId !== "")
+            data.reply = { in_reply_to_tweet_id: body.replyId };
+
+
+        console.log(data);
 
         const OAuthParams = {
             oauth_consumer_key: config.get("consumer_key"),
@@ -44,6 +49,7 @@ const post = async(body) => {
 
 
         const res_twitter = await axios.post(url, data, Config);
+        return res_twitter.data;
     } catch (err) {
         console.log(err.message);
     }

@@ -2,21 +2,22 @@ const express = require("express");
 const Router = express.Router();
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
-const Tweet = require("../../models/Tweet");
+const Thread = require("../../models/Thread");
 
 
 
-//  @route  POST api/tweet
-//  @desc   get tweets scheduled by user
+//  @route  POST api/thread
+//  @desc   get threads scheduled by user
 //  @access Private
 
 Router.post("/", [auth], async(req, res) => {
     try {
         const user = await User.findOne({ twitterUserId: String(req.userId) });
 
-        const tweets = await Tweet.find({ user: user._id });
+        const thread = await Thread.find({ user: user._id });
 
-        res.json({ "tweets": tweets });
+        res.json({ "thread": thread.tweets });
+
     } catch (err) {
         res.status(500).send({
             msg: "Server Error",
@@ -28,38 +29,43 @@ Router.post("/", [auth], async(req, res) => {
 });
 
 
-//  @route  POST api/tweet/schedule
-//  @desc   schedule a tweet at a paticular date and time
+//  @route  POST api/thread/schedule
+//  @desc   schedule a thread with tweets at different time and date
 //  @access Private   
 
 Router.post("/schedule", [auth], async(req, res) => {
     try {
 
-        const {
-            text,
-            time,
-            media
-        } = req.body;
 
-        const user = await User.findOne({ twitterUserId: req.userId })
+        const user = await User.findOne({ twitterUserId: req.userId });
 
-        const tweetData = {};
+        threadData = {}
 
-        tweetData.user = user._id;
+        threadData.user = user._id;
 
-        tweetData.time = time;
+        tweets = [];
 
-        if (media)
-            tweetData.media = media;
+        req.body.tweets.forEach((tweet) => {
 
-        if (text)
-            tweetData.text = text;
+            tweetData = {};
 
+            tweetData.time = tweet.time;
 
+            if (tweet.media)
+                tweetData.media = tweet.media;
 
-        const tweet = new Tweet(tweetData);
+            if (tweet.text)
+                tweetData.text = tweet.text;
 
-        tweet.save();
+            tweets.push(tweetData)
+
+        });
+
+        threadData.tweets = tweets;
+
+        const thread = new Thread(threadData);
+
+        thread.save();
 
         res.json({ scheduled: true });
 
@@ -79,7 +85,7 @@ Router.delete("/delete/:id", [auth], async(req, res) => {
     try {
 
         const user = await User.findOne({ twitterUserId: req.userId });
-        await Tweet.deleteOne({
+        await Thread.deleteOne({
             _id: req.params.id,
             user: user._id
         });
@@ -102,28 +108,32 @@ Router.put("/edit/:id", [auth], async(req, res) => {
     try {
         const user = await User.findOne({ twitterUserId: req.userId });
 
-        const {
-            text,
-            time,
-            media
-        } = req.body;
+        threadData = {}
 
-        const tweetData = {};
+        threadData.user = user._id;
 
+        tweets = [];
 
-        if (time)
-            tweetData.time = time;
+        req.body.tweets.forEach((tweet) => {
 
-        if (media)
-            tweetData.media = media;
+            tweetData = {};
+            if (tweet.time)
+                tweetData.time = time;
 
-        if (text)
-            tweetData.text = text;
+            if (tweet.media)
+                tweetData.media = media;
 
-        await Tweet.updateOne({
+            if (tweet.text)
+                tweetData.text = text;
+
+            tweets.push(tweetData)
+
+        });
+
+        await Thread.updateOne({
             _id: req.params.id,
             user: user._id
-        }, { $set: tweetData });
+        }, { $set: threadData });
 
         res.json({ edited: true });
 

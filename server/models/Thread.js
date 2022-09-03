@@ -5,7 +5,7 @@ const ThreadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
     },
-    tweet: [{
+    tweets: [{
         replyId: {
             type: String,
             default: ""
@@ -19,6 +19,7 @@ const ThreadSchema = new mongoose.Schema({
         },
         time: {
             type: Date,
+            required: true
         },
     }, ],
 });
