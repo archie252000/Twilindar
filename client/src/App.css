@@ -1,448 +1,456 @@
-:root {
-    --pirmary-blue: #39AEEF;
-    --secondary-blue: #0077D1;
-    --primary-gray: #F5F5F5;
-    --secondary-gray: #858585;
-    --tertiary-gray: #CDCDCD;
-    --primary-red: #FF0000;
-    --primary-purple: #EA51F0;
-    --button-border-radius: 5pt;
-    --box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-* {
-    border: 0;
-    padding: 0;
-    margin: 0;
-}
-
-html {
-    overflow: hidden;
-}
-
-#landing {
-    height: 100vh;
-    background-color: var(--secondary-blue);
-    display: flex;
-    flex-direction: column;
-}
-
-#landing-upper {
-    display: flex;
-    height: 50vh;
-    width: 100vw;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-#logo-landing {
-    height: 17vw;
-}
-
-h1 {
-    font-family: "fattern";
-    color: white;
-    text-decoration: none;
-    font-size: 7vw;
-    z-index: 1;
-    margin: 5vw
-}
-
-#fig-1 {
-    position: absolute;
-    left: 7vw;
-    top: 3vh;
-    height: 14vw;
-}
-
-#landing-lower {
-    height: 50vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#sign-in-twitter {
-    background-color: var(--pirmary-blue);
-    font-size: 1.2vw;
-    font-family: "Roboto";
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 7pt;
-    border-radius: var(--button-border-radius);
-    box-shadow: var(--box-shadow);
-    color: white;
-    cursor: pointer;
-}
-
-#sign-in-twitter a {
-    text-decoration: none;
-    color: white;
-}
-
-#twitter-logo {
-    width: 1.3vw;
-    margin-right: 7pt;
-}
-
-#fig-2 {
-    position: absolute;
-    bottom: -100px;
-    right: -70px;
-    height: 25vw;
-}
-
-#dashboard {
-    background-color: var(--primary-gray);
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-#dashboard-inner {
-    background-color: white;
-    height: 95vh;
-    width: 95vw;
-    border-radius: 5pt;
-    box-shadow: var(--box-shadow);
-    padding-left: 3vh;
-    padding-right: 3vh;
-}
-
-#user-wrapper {
-    display: flex;
-    height: 7vh;
-    flex-direction: row;
-    padding-top: 2vh;
-    padding-bottom: 2vh;
-    align-items: center;
-}
-
-#user {
-    display: flex;
-    flex-direction: row;
-}
-
-#user-image {
-    height: 2.3vw;
-    border-radius: 1000pt;
-    margin-right: 7pt;
-}
-
-#name {
-    font-family: "Gotham";
-    font-weight: 400;
-}
-
-#user-name {
-    font-family: "Gotham";
-    font-weight: 100;
-    font-size: 0.9vw;
-    color: var(--secondary-gray);
-}
-
-#logout-wrapper {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row-reverse;
-}
-
-#logout-button {
-    background-color: var(--pirmary-blue);
-    font-size: 1.2vw;
-    font-family: "Roboto";
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 7pt;
-    border-radius: 5pt;
-    box-shadow: var(--box-shadow);
-    text-decoration: none;
-    color: white;
-    max-height: 3vh;
-}
-
-#nothing-scheduled-wrapper {
-    height: 73vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-#nothing-image {
-    width: 16vw;
-}
-
-#nothing-message {
-    width: 16vw;
-}
-
-#logo-text {
-    width: 13vw;
-}
-
-#add-button-wrapper {
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-#add-button {
-    height: 5vh;
-    background: none;
-}
-
-#add-button-image {
-    height: 6vh;
-}
-
-#cards-wrapper {
-    height: 73vh;
-    display: grid;
-    grid-template-columns: 31.5vw 31.5vw 31.5vw;
-    overflow-y: auto;
-    grid-auto-flow: row;
-    grid-auto-rows: calc(100% - 40vh);
-}
-
-.card {
-    border: 1px solid var(--tertiary-gray);
-    border-radius: var(--button-border-radius);
-    box-shadow: var(--box-shadow);
-    margin: 1vh 1vw 1vh 1vw;
-    max-width: 30vw;
-    display: flex;
-    flex-direction: column;
-    padding: 1vh 1vw 1vh 1vw;
-    font-family: "Gotham";
-}
-
-.card-top {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: row;
-    font-size: 1vw;
-}
-
-.card-thread-bar {
-    display: flex;
-    flex-direction: row;
-    background-color: #EA51F0;
-}
-
-.card-middle {
-    flex-grow: 5;
-    padding: 4pt;
-    font-weight: 100;
-    font-size: medium;
-    overflow: scroll;
-}
-
-.card-bottom {
-    flex-grow: 1.5;
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-.card-date {
-    font-weight: 100;
-}
-
-.action-button {
-    background-color: var(--pirmary-blue);
-    margin: 0vh 0.25vw 1vh 0.25vw;
-    font-weight: 100;
-    font-family: "Gotham";
-    font-size: 0.9vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    padding: 3pt;
-    border-radius: 5pt;
-    box-shadow: var(--box-shadow);
-    text-decoration: none;
-    color: white;
-    max-height: 3.5vh;
-}
-
-.delete-button {
-    background-color: var(--primary-red);
-    width: 3.5vw;
-}
-
-.media-button {
-    background-color: var(--primary-purple);
-    width: 3vw;
-}
-
-.edit-button {
-    background-color: var(--pirmary-blue);
-    width: 2.5vw;
-}
-
-.card-date {
-    display: flex;
-    flex-direction: row-reverse;
-    flex-grow: 2;
-}
-
-.card-heading {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    color: var(--pirmary-blue);
-}
-
-.thread-icon {
-    height: 0.75vw;
-    margin-left: 0.25vw;
-}
-
-#add-button {
-    cursor: pointer
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid var(--secondary-gray);
-    border-radius: var(--button-border-radius);
-    width: 32%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    outline: none;
-}
-
-.close {
-    color: var(--secondary-gray);
-    float: right;
-    font-size: 35px;
-    font-weight: 100;
-}
-
-#modal-top {
-    display: flex;
-    flex-direction: row-reverse;
-    width: 100%;
-}
-
-#tweet-text {
-    height: 25vh;
-    width: 30vw;
-    border: 1px solid var(--secondary-gray);
-    border-radius: var(--button-border-radius);
-    padding: 5pt;
-    font-size: large;
-    font-family: "Gotham";
-    font-weight: 100;
-}
-
-#tweet-text:focus {
-    border: 1px solid var(--pirmary-blue);
-    outline: none !important;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#count {
-    display: flex;
-    flex-direction: row-reverse;
-    width: 100%;
-    color: var(--secondary-gray);
-    font-family: "Gotham";
-    font-weight: 100;
-    font-size: 10pt;
-    padding-top: 5pt;
-}
-
-#schedule-form-bottom {
-    display: flex;
-}
-
-#schedule-button-wrapper {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: row-reverse;
-}
-
-#schedule-button {
-    height: 5vh;
-    width: 10vw;
-    background-color: var(--pirmary-blue);
-    color: white;
-    font-family: "Gotham";
-    font-size: min(2.3vh, 1.3vw);
-    font-weight: 100;
-    border-radius: var(--button-border-radius);
-    cursor: pointer;
-    margin-top: 2vh;
-}
-
-#add-to-thread-wrapper {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-}
-
-#add-to-thread-button {
-    background-color: var(--pirmary-blue);
-    height: 20pt;
-    width: 20pt;
-    border-radius: 20pt;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-@font-face {
-    font-family: "fattern";
-    src: url("./assets/Fattern.ttf");
-}
-
-@font-face {
-    font-family: "Gotham";
-    src: url("./assets/GothamLight.ttf");
-    font-weight: 100;
-}
-
-@font-face {
-    font-family: "Gotham";
-    src: url("./assets/GothamMedium.ttf");
-    font-weight: 400;
-}
-
-@font-face {
-    font-family: "Gotham";
-    src: url("./assets/GothamBold.ttf");
-    font-weight: 700;
-}
+      :root {
+         --pirmary-blue: #39AEEF;
+         --secondary-blue: #0077D1;
+         --primary-gray: #F5F5F5;
+         --secondary-gray: #858585;
+         --tertiary-gray: #CDCDCD;
+         --primary-red: #FF0000;
+         --primary-purple: #EA51F0;
+         --button-border-radius: 5pt;
+         --box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+     }
+     
+     * {
+         border: 0;
+         padding: 0;
+         margin: 0;
+     }
+     
+     html {
+         overflow: hidden;
+     }
+     
+     #landing {
+         height: 100vh;
+         background-color: var(--secondary-blue);
+         display: flex;
+         flex-direction: column;
+     }
+     
+     #landing-upper {
+         display: flex;
+         height: 50vh;
+         width: 100vw;
+         flex-direction: row;
+         align-items: center;
+         justify-content: center;
+     }
+     
+     #logo-landing {
+         height: 17vw;
+     }
+     
+     h1 {
+         font-family: "fattern";
+         color: white;
+         text-decoration: none;
+         font-size: 7vw;
+         z-index: 1;
+         margin: 5vw
+     }
+     
+     #fig-1 {
+         position: absolute;
+         left: 7vw;
+         top: 3vh;
+         height: 14vw;
+     }
+     
+     #landing-lower {
+         height: 50vh;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+     }
+     
+     #sign-in-twitter {
+         background-color: var(--pirmary-blue);
+         font-size: 1.2vw;
+         font-family: "Roboto";
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         padding: 7pt;
+         border-radius: var(--button-border-radius);
+         box-shadow: var(--box-shadow);
+         color: white;
+         cursor: pointer;
+     }
+     
+     #sign-in-twitter a {
+         text-decoration: none;
+         color: white;
+     }
+     
+     #twitter-logo {
+         width: 1.3vw;
+         margin-right: 7pt;
+     }
+     
+     #fig-2 {
+         position: absolute;
+         bottom: -100px;
+         right: -70px;
+         height: 25vw;
+     }
+     
+     #dashboard {
+         background-color: var(--primary-gray);
+         height: 100vh;
+         display: flex;
+         flex-direction: row;
+         justify-content: center;
+         align-items: center;
+     }
+     
+     #dashboard-inner {
+         background-color: white;
+         height: 95vh;
+         width: 95vw;
+         border-radius: 5pt;
+         box-shadow: var(--box-shadow);
+         padding-left: 3vh;
+         padding-right: 3vh;
+     }
+     
+     #user-wrapper {
+         display: flex;
+         height: 7vh;
+         flex-direction: row;
+         padding-top: 2vh;
+         padding-bottom: 2vh;
+         align-items: center;
+     }
+     
+     #user {
+         display: flex;
+         flex-direction: row;
+     }
+     
+     #user-image {
+         height: 2.3vw;
+         border-radius: 1000pt;
+         margin-right: 7pt;
+     }
+     
+     #name {
+         font-family: "Gotham";
+         font-weight: 400;
+     }
+     
+     #user-name {
+         font-family: "Gotham";
+         font-weight: 100;
+         font-size: 0.9vw;
+         color: var(--secondary-gray);
+     }
+     
+     #logout-wrapper {
+         display: flex;
+         flex-grow: 1;
+         flex-direction: row-reverse;
+     }
+     
+     #logout-button {
+         background-color: var(--pirmary-blue);
+         font-size: 1.2vw;
+         font-family: "Roboto";
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         padding: 7pt;
+         border-radius: 5pt;
+         box-shadow: var(--box-shadow);
+         text-decoration: none;
+         color: white;
+         max-height: 3vh;
+     }
+     
+     #nothing-scheduled-wrapper {
+         height: 73vh;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+     }
+     
+     #nothing-image {
+         width: 16vw;
+     }
+     
+     #nothing-message {
+         width: 16vw;
+     }
+     
+     #logo-text {
+         width: 13vw;
+     }
+     
+     #add-button-wrapper {
+         display: flex;
+         flex-direction: row-reverse;
+     }
+     
+     #add-button {
+         height: 5vh;
+         background: none;
+     }
+     
+     #add-button-image {
+         height: 6vh;
+     }
+     
+     #cards-wrapper {
+         height: 73vh;
+         display: grid;
+         grid-template-columns: 31.5vw 31.5vw 31.5vw;
+         overflow-y: auto;
+         grid-auto-flow: row;
+         grid-auto-rows: calc(100% - 40vh);
+     }
+     
+     .card {
+         border: 1px solid var(--tertiary-gray);
+         border-radius: var(--button-border-radius);
+         box-shadow: var(--box-shadow);
+         margin: 1vh 1vw 1vh 1vw;
+         max-width: 30vw;
+         display: flex;
+         flex-direction: column;
+         padding: 1vh 1vw 1vh 1vw;
+         font-family: "Gotham";
+     }
+     
+     .card-top {
+         flex-grow: 1;
+         display: flex;
+         flex-direction: row;
+         font-size: 1vw;
+     }
+     
+     .card-thread-bar {
+         display: flex;
+         flex-direction: row;
+         background-color: #EA51F0;
+     }
+     
+     .card-middle {
+         flex-grow: 5;
+         padding: 4pt;
+         font-weight: 100;
+         font-size: medium;
+         overflow: scroll;
+     }
+     
+     .card-bottom {
+         flex-grow: 1.5;
+         display: flex;
+         flex-direction: row-reverse;
+     }
+     
+     .card-date {
+         font-weight: 100;
+     }
+     
+     .action-button {
+         background-color: var(--pirmary-blue);
+         margin: 0vh 0.25vw 1vh 0.25vw;
+         font-weight: 100;
+         font-family: "Gotham";
+         font-size: 0.9vw;
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         text-align: center;
+         justify-content: center;
+         padding: 3pt;
+         border-radius: 5pt;
+         box-shadow: var(--box-shadow);
+         text-decoration: none;
+         color: white;
+         max-height: 3.5vh;
+     }
+     
+     .delete-button {
+         background-color: var(--primary-red);
+         width: 3.5vw;
+     }
+     
+     .media-button {
+         background-color: var(--primary-purple);
+         width: 3vw;
+     }
+     
+     .edit-button {
+         background-color: var(--pirmary-blue);
+         width: 2.5vw;
+     }
+     
+     .card-date {
+         display: flex;
+         flex-direction: row-reverse;
+         flex-grow: 2;
+     }
+     
+     .card-heading {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         flex-grow: 1;
+         color: var(--pirmary-blue);
+     }
+     
+     .thread-icon {
+         height: 0.75vw;
+         margin-left: 0.25vw;
+     }
+     
+     #add-button {
+         cursor: pointer
+     }
+     
+     .modal {
+         display: none;
+         position: fixed;
+         z-index: 2;
+         left: 0;
+         top: 0;
+         width: 100%;
+         height: 100%;
+         overflow: auto;
+         background-color: rgba(0, 0, 0, 0.4);
+     }
+     
+     .modal-content {
+         background-color: white;
+         margin: 15% auto;
+         padding: 20px;
+         border: 1px solid var(--secondary-gray);
+         border-radius: var(--button-border-radius);
+         width: 32%;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         outline: none;
+     }
+     
+     .close {
+         color: var(--secondary-gray);
+         float: right;
+         font-size: 35px;
+         font-weight: 100;
+     }
+     
+     #modal-top {
+         display: flex;
+         flex-direction: row-reverse;
+         width: 100%;
+     }
+     
+     #tweet-text {
+         height: 25vh;
+         width: 30vw;
+         border: 1px solid var(--secondary-gray);
+         border-radius: var(--button-border-radius);
+         padding: 5pt;
+         font-size: large;
+         font-family: "Gotham";
+         font-weight: 100;
+     }
+     
+     #tweet-text:focus {
+         border: 1px solid var(--pirmary-blue);
+         outline: none !important;
+     }
+     
+     .close:hover,
+     .close:focus {
+         color: black;
+         text-decoration: none;
+         cursor: pointer;
+     }
+     
+     #count {
+         display: flex;
+         flex-direction: row-reverse;
+         width: 100%;
+         color: var(--secondary-gray);
+         font-family: "Gotham";
+         font-weight: 100;
+         font-size: 10pt;
+         padding-top: 5pt;
+     }
+     
+     #schedule-form-bottom {
+         display: flex;
+     }
+     
+     #schedule-button-wrapper {
+         display: flex;
+         flex-grow: 1;
+         flex-direction: row-reverse;
+     }
+     
+     #schedule-button {
+         height: 5vh;
+         width: 10vw;
+         background-color: var(--pirmary-blue);
+         color: white;
+         font-family: "Gotham";
+         font-size: min(2.3vh, 1.3vw);
+         font-weight: 100;
+         border-radius: var(--button-border-radius);
+         cursor: pointer;
+         margin-top: 2vh;
+     }
+     
+     #add-to-thread-wrapper {
+         flex-grow: 1;
+         display: flex;
+         align-items: center;
+     }
+     
+     #add-to-thread-button {
+         background-color: var(--pirmary-blue);
+         height: 20pt;
+         width: 20pt;
+         border-radius: 20pt;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         color: white;
+         font-size: 25px;
+         cursor: pointer;
+     }
+     
+     .loading-page {
+         height: 100vh;
+         width: 100vw;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+     }
+     
+     @font-face {
+         font-family: "fattern";
+         src: url("./assets/Fattern.ttf");
+     }
+     
+     @font-face {
+         font-family: "Gotham";
+         src: url("./assets/GothamLight.ttf");
+         font-weight: 100;
+     }
+     
+     @font-face {
+         font-family: "Gotham";
+         src: url("./assets/GothamMedium.ttf");
+         font-weight: 400;
+     }
+     
+     @font-face {
+         font-family: "Gotham";
+         src: url("./assets/GothamBold.ttf");
+         font-weight: 700;
+     }

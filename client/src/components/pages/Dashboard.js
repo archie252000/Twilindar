@@ -1,6 +1,53 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router-dom'
+import config from "../../config/config";
+import axios from "axios"
 
 export const Dashboard = () => {
+    
+    const authenticate = async ()=> {
+        try{
+             const url = config["baseURL"] + "/api/authenticate";
+       
+             const data = { "oauth_token": window.localStorage.getItem("oauth_token"),
+                            "oauth_token_secret": window.localStorage.getItem("oauth_token_secret") };
+          
+             const res =  await axios.post(url, data);
+             const res_temp =  await axios.post(config["baseURL"] + "/api/user",{screen_name: res.data.username, "oauth_token": window.localStorage.getItem("oauth_token"),
+             "oauth_token_secret": window.localStorage.getItem("oauth_token_secret")});
+             console.log(res_temp.data);
+
+ 
+             if(res.data.isAuth){
+                 window.localStorage.setItem("isAuth", true);
+
+                 setName(res.data.name); 
+                 setUsername(res.data.username.toLowerCase());
+             } else{
+                 navigate("/");
+             }
+         
+         } catch(err){
+             navigate("/");
+         } 
+     };
+
+
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+
+    const navigate = useNavigate();
+    
+
+    
+    useEffect(()=>{
+        
+        if(!window.localStorage.getItem("oauth_token") && !window.localStorage.getItem("oauth_token_secret"))
+            navigate("/");
+        authenticate();
+    },[]);
+    
+    
     return ( 
     <section id="dashboard">
         <section id="dashboard-inner">
@@ -8,8 +55,8 @@ export const Dashboard = () => {
                 <div id="user">
                     <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" id="user-image"/>
                     <div id="user-info">
-                    <div id="name">Name</div>
-                    <div id="user-name">@username</div>
+                    <div id="name">{name}</div>
+                    <div id="user-name">@{username}</div>
                 </div>
             </div>
             <div id="logout-wrapper">
@@ -23,51 +70,51 @@ export const Dashboard = () => {
             <img src="./assets/NothingMessage.png" id="nothing-message">
         </div> */}
         <div id="cards-wrapper">
-            <div class="card">
-                <div class="card-top">
-                    <div class="card-heading">Tweet</div>
-                    <div class="card-date"><b>Date: dd/mm/yy Time: xx:xx:xx:xx</b></div>
+            <div className="card">
+                <div className="card-top">
+                    <div className="card-heading">Tweet</div>
+                    <div className="card-date"><b>Date: dd/mm/yy Time: xx:xx:xx:xx</b></div>
                 </div>
-                <div class="card-middle">
+                <div className="card-middle">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Vivamus nec varius ligula, a tristique nisi.<br/> In semper leo eget lectus lacinia bibendum. Nam vitae est massa. Pellentesque vestibulum maximus sodales. .
                     </p>
                 </div>
-                <div class="card-bottom">
-                    <a href="#" class="action-button edit-button">Edit</a>
-                    <a href="#" class="action-button media-button">Media</a>
-                    <a href="#" class="action-button delete-button">Delete</a>
+                <div className="card-bottom">
+                    <a href="#" className="action-button edit-button">Edit</a>
+                    <a href="#" className="action-button media-button">Media</a>
+                    <a href="#" className="action-button delete-button">Delete</a>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-top">
-                    <div class="card-heading">Thread <img class="thread-icon" src={require("../../assets/thread-icon.png")}></img>
+            <div className="card">
+                <div className="card-top">
+                    <div className="card-heading">Thread <img className="thread-icon" src={require("../../assets/thread-icon.png")}></img>
                     </div>
-                    <div class="card-date"><b>Date: dd/mm/yy Time: xx:xx:xx:xx</b></div>
+                    <div className="card-date"><b>Date: dd/mm/yy Time: xx:xx:xx:xx</b></div>
                 </div>
-                <div class="card-thread-bar"></div>
-                <div class="card-middle">
+                <div className="card-thread-bar"></div>
+                <div className="card-middle">
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Vivamus nec varius ligula, a tristique nisi.<br/> In semper leo eget lectus lacinia bibendum. Nam vitae est massa. Pellentesque vestibulum maximus sodales. .
                     </p>
                 </div>
-                <div class="card-bottom">
-                    <a href="#" class="action-button edit-button">Edit</a>
-                    <a href="#" class="action-button media-button">Media</a>
-                    <a href="#" class="action-button delete-button">Delete</a>
+                <div className="card-bottom">
+                    <a href="#" className="action-button edit-button">Edit</a>
+                    <a href="#" className="action-button media-button">Media</a>
+                    <a href="#" className="action-button delete-button">Delete</a>
                 </div>
             </div>
         </div>
 
   
-        <div id="add-modal" class="modal">
-            <div class="modal-content">
+        <div id="add-modal" className="modal">
+            <div className="modal-content">
                 <div id="modal-top">
-                    <span class="close">&times;</span>
+                    <span className="close">&times;</span>
                 </div>
                 <form>
-                    <textarea name="tweet-text" id="tweet-text" maxlength="280"></textarea>
+                    <textarea name="tweet-text" id="tweet-text" maxLength="280"></textarea>
                     <div id="count">
                         <span id="maximum">/280 characters</span>
                         <span id="current">0</span>

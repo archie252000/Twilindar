@@ -22,7 +22,11 @@ Router.post("/", [auth], async(req, res) => {
             user.save();
         }
 
-        res.json({ isAuth: true });
+        res.json({
+            isAuth: true,
+            name: req.name,
+            username: req.username
+        });
     } catch (err) {
         res.status(500).send({
             msg: "Server Error",

@@ -40,7 +40,7 @@ const computeOAuthSignature = (httpMethod, url, OAuthParams, body, OAuthTokenSec
     }
 
     let signatureBaseString = httpMethod.toUpperCase() + "&";
-    signatureBaseString += encodeURIComponent(url) + "&";
+    signatureBaseString += encodeURIComponent(url.split("?")[0]) + "&";
     signatureBaseString += encodeURIComponent(paramString);
 
     let signingKey = encodeURIComponent(config.get("consumer_key_secret")) + "&" + encodeURIComponent(OAuthTokenSecret);

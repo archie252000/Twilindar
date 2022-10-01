@@ -2,13 +2,14 @@ const axios = require("axios");
 const config = require("config");
 const computeOAuthSignature = require("../utils/signature");
 const genToken = require("../utils/unique_token");
+const crypt = require("../utils/crypt");
 
 const auth = async(req, res, next) => {
     try {
 
         const OAuthParams = {
             oauth_consumer_key: config.get("consumer_key"),
-            oauth_token: req.body.accessToken,
+            oauth_token: crypt.decrypt(req.body.oauth_token),
             oauth_timestamp: Math.floor(+new Date() / 1000),
             oauth_nonce: genToken(),
             oauth_signature_method: "HMAC-SHA1",
@@ -17,7 +18,7 @@ const auth = async(req, res, next) => {
 
         const url = "https://api.twitter.com/1.1/account/verify_credentials.json";
 
-        const oauth_signature = computeOAuthSignature("GET", url, OAuthParams, undefined, req.body.accessTokenSecret);
+        const oauth_signature = computeOAuthSignature("GET", url, OAuthParams, undefined, crypt.decrypt(req.body.oauth_token_secret));
 
         const Config = {
             headers: {
