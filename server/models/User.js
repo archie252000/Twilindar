@@ -4,6 +4,7 @@ const UserSchema = new mongoose.Schema({
     twitterUserId: {
         type: String,
         required: true,
+        unique: true
     },
 
     username: {

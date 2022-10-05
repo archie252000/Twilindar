@@ -10,8 +10,8 @@ Router.post("/", async(req, res) => {
     try {
         const OAuthParams = {
             oauth_consumer_key: config.get("consumer_key"),
-            oauth_timestamp: 1664577343,
-            oauth_nonce: "daxdawerfqwdwd33xx",
+            oauth_timestamp: Math.floor(+new Date() / 1000),
+            oauth_nonce: genToken(),
             oauth_signature_method: "HMAC-SHA1",
             oauth_version: "1.0"
         }

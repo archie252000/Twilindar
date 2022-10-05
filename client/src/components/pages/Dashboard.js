@@ -1,50 +1,63 @@
-import React, {useEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom'
-import config from "../../config/config";
-import axios from "axios"
+import React, {useEffect, useState, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
+
+import {Card} from "../card/Card"
+
+
+import {authenticate} from '../../actions/auth';
+import {userData, userTweets, userThreads} from '../../actions/data';
+
+import {sortTweetsAndThreads} from "../../utils/sort";
+
+import {ReactComponent as AddIcon} from "../../assets/add-icon.svg"
+
 
 export const Dashboard = () => {
     
-    const authenticate = async ()=> {
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+    const [imageURL, setImageURL] = useState("");
+    const [tweetsAndThreads, setTweetsAndThreads] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [charCount, setCharCount] = useState(0)
+
+    const navigate = useNavigate();
+    
+    const load = async ()=> {
         try{
-             const url = config["baseURL"] + "/api/authenticate";
-       
-             const data = { "oauth_token": window.localStorage.getItem("oauth_token"),
-                            "oauth_token_secret": window.localStorage.getItem("oauth_token_secret") };
-          
-             const res =  await axios.post(url, data);
-             const res_temp =  await axios.post(config["baseURL"] + "/api/user",{screen_name: res.data.username, "oauth_token": window.localStorage.getItem("oauth_token"),
-             "oauth_token_secret": window.localStorage.getItem("oauth_token_secret")});
-             console.log(res_temp.data);
+             const auth_data = await authenticate();
+             const user_data = await userData(auth_data.username);
+             const user_tweets = await userTweets();
+             const user_threads = await userThreads();
+             const tweets_and_threads = sortTweetsAndThreads(user_tweets, user_threads);
 
  
-             if(res.data.isAuth){
+             if(auth_data.isAuth){
                  window.localStorage.setItem("isAuth", true);
-
-                 setName(res.data.name); 
-                 setUsername(res.data.username.toLowerCase());
-             } else{
+  
+                 setName(auth_data.name); 
+                 setUsername(auth_data.username.toLowerCase());
+                 setImageURL(user_data.profile_image_url.replace("_normal", ""));
+                 setTweetsAndThreads(tweets_and_threads)
+                
+  
+                } else{
                  navigate("/");
-             }
+                }
          
          } catch(err){
+            
              navigate("/");
          } 
      };
 
+ 
 
-    const [name, setName] = useState("");
-    const [username, setUsername] = useState("");
-
-    const navigate = useNavigate();
-    
-
-    
     useEffect(()=>{
         
         if(!window.localStorage.getItem("oauth_token") && !window.localStorage.getItem("oauth_token_secret"))
             navigate("/");
-        authenticate();
+        load();
     },[]);
     
     
@@ -53,7 +66,7 @@ export const Dashboard = () => {
         <section id="dashboard-inner">
             <div id="user-wrapper">
                 <div id="user">
-                    <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80" id="user-image"/>
+                    <img src={imageURL} id="user-image"/>
                     <div id="user-info">
                     <div id="name">{name}</div>
                     <div id="user-name">@{username}</div>
@@ -65,65 +78,31 @@ export const Dashboard = () => {
                 </a>
             </div>
         </div>
-{/* <div id="nothing-scheduled-wrapper">
-            <img src="./assets/NothingFigure.png" id="nothing-image">
-            <img src="./assets/NothingMessage.png" id="nothing-message">
-        </div> */}
-        <div id="cards-wrapper">
-            <div className="card">
-                <div className="card-top">
-                    <div className="card-heading">Tweet</div>
-                    <div className="card-date"><b>Date: dd/mm/yy Time: xx:xx:xx:xx</b></div>
-                </div>
-                <div className="card-middle">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Vivamus nec varius ligula, a tristique nisi.<br/> In semper leo eget lectus lacinia bibendum. Nam vitae est massa. Pellentesque vestibulum maximus sodales. .
-                    </p>
-                </div>
-                <div className="card-bottom">
-                    <a href="#" className="action-button edit-button">Edit</a>
-                    <a href="#" className="action-button media-button">Media</a>
-                    <a href="#" className="action-button delete-button">Delete</a>
-                </div>
-            </div>
-
-            <div className="card">
-                <div className="card-top">
-                    <div className="card-heading">Thread <img className="thread-icon" src={require("../../assets/thread-icon.png")}></img>
-                    </div>
-                    <div className="card-date"><b>Date: dd/mm/yy Time: xx:xx:xx:xx</b></div>
-                </div>
-                <div className="card-thread-bar"></div>
-                <div className="card-middle">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Vivamus nec varius ligula, a tristique nisi.<br/> In semper leo eget lectus lacinia bibendum. Nam vitae est massa. Pellentesque vestibulum maximus sodales. .
-                    </p>
-                </div>
-                <div className="card-bottom">
-                    <a href="#" className="action-button edit-button">Edit</a>
-                    <a href="#" className="action-button media-button">Media</a>
-                    <a href="#" className="action-button delete-button">Delete</a>
-                </div>
-            </div>
-        </div>
-
-  
-        <div id="add-modal" className="modal">
+        {(tweetsAndThreads.length == 0)? ( <div id="nothing-scheduled-wrapper">
+            <img src={require("../../assets/NothingFigure.png")} id="nothing-image"/>
+            <img src={require("../../assets/NothingMessage.png")} id="nothing-message"/>
+        </div> ):
+        (<div id="cards-wrapper">
+            {
+            tweetsAndThreads.map((obj)=>{
+                return <Card type = {(obj.tweets)?"thread":"tweet"} text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} date={(obj.tweets)?(obj.tweets[0].time):(obj.time)}/>
+            })
+            } 
+        </div> )}
+        <div id="add-modal" className="modal" style={{display: showModal ? "block" : "none"}}>
             <div className="modal-content">
-                <div id="modal-top">
+                <div id="modal-top" onClick={()=>setShowModal(false)}>
                     <span className="close">&times;</span>
                 </div>
                 <form>
-                    <textarea name="tweet-text" id="tweet-text" maxLength="280"></textarea>
+                    <textarea name="tweet-text" id="tweet-text" maxLength="280" onKeyUp={(e)=>setCharCount(e.target.value.length)}></textarea>
                     <div id="count">
                         <span id="maximum">/280 characters</span>
-                        <span id="current">0</span>
+                        <span id="current">{charCount}</span>
                     </div>
                     <div id="schedule-form-bottom">
                         <div id="add-to-thread-wrapper">
-                            <div id="add-to-thread-button">
-                                &plus;
-                            </div>
+                            <div id="add-to-thread-button">+</div>
                         </div>
                         <div id="schedule-button-wrapper">
                             <input id="schedule-button" type="submit" value="Schedule Tweet"/>
@@ -136,7 +115,7 @@ export const Dashboard = () => {
  
 
         <div id="add-button-wrapper">
-            <button id="add-button">
+            <button id="add-button" onClick={()=>setShowModal(true)}>
                 <img src={require("../../assets/add-button.png")}id="add-button-image"/>
             </button>
         </div>

@@ -15,8 +15,8 @@ Router.post("/", [auth], async(req, res) => {
                 twitterUserId: String(req.userId),
                 name: req.name,
                 username: req.username,
-                accessToken: crypt.encrypt(String(req.body.accessToken)),
-                accessTokenSecret: crypt.encrypt(String(req.body.accessTokenSecret))
+                accessToken: String(req.body.oauth_token),
+                accessTokenSecret: String(req.body.oauth_token_secret)
 
             });
             user.save();

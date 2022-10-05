@@ -16,7 +16,7 @@ Router.post("/", [auth], async(req, res) => {
 
         const thread = await Thread.find({ user: user._id });
 
-        res.json({ "thread": thread.tweets });
+        res.json({ "threads": thread });
 
     } catch (err) {
         res.status(500).send({
