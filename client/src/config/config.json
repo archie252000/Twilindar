@@ -1,7 +1,11 @@
 {
     "baseURL": "http://localhost:5000",
     "colors": {
-        "primaryBlue": "#39AEEF"
+        "primaryBlue": "#39AEEF",
+        "secondaryGray": "#858585"
+
     }
+
+
 
 }

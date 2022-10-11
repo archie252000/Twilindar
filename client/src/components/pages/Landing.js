@@ -1,19 +1,12 @@
 import React from 'react';
-import config from '../../config/config';
-import axios from 'axios';
+import { login } from "../../actions/login"
 
 
 export const Landing = () => {
     
     
-    const login = async () => { 
-        const res = await axios.get(config["baseURL"]+"/api/login");
-        const params = res.data.data.split("&");
-        window.location.href = `https://api.twitter.com/oauth/authenticate?${params[0]}`
-
-    }
- 
-return (
+    
+    return (
 
         <section id="landing">
         <section id="landing-upper">

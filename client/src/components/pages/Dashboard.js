@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-import {Card} from "../card/Card"
+import {Card} from "../card/Card";
+import {TextModal} from "../modal/TextModal";
 
 
 import {authenticate} from '../../actions/auth';
@@ -9,7 +10,6 @@ import {userData, userTweets, userThreads} from '../../actions/data';
 
 import {sortTweetsAndThreads} from "../../utils/sort";
 
-import {ReactComponent as AddIcon} from "../../assets/add-icon.svg"
 
 
 export const Dashboard = () => {
@@ -19,7 +19,6 @@ export const Dashboard = () => {
     const [imageURL, setImageURL] = useState("");
     const [tweetsAndThreads, setTweetsAndThreads] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [charCount, setCharCount] = useState(0)
 
     const navigate = useNavigate();
     
@@ -89,30 +88,8 @@ export const Dashboard = () => {
             })
             } 
         </div> )}
-        <div id="add-modal" className="modal" style={{display: showModal ? "block" : "none"}}>
-            <div className="modal-content">
-                <div id="modal-top" onClick={()=>setShowModal(false)}>
-                    <span className="close">&times;</span>
-                </div>
-                <form>
-                    <textarea name="tweet-text" id="tweet-text" maxLength="280" onKeyUp={(e)=>setCharCount(e.target.value.length)}></textarea>
-                    <div id="count">
-                        <span id="maximum">/280 characters</span>
-                        <span id="current">{charCount}</span>
-                    </div>
-                    <div id="schedule-form-bottom">
-                        <div id="add-to-thread-wrapper">
-                            <div id="add-to-thread-button">+</div>
-                        </div>
-                        <div id="schedule-button-wrapper">
-                            <input id="schedule-button" type="submit" value="Schedule Tweet"/>
-                        </div>
-                    </div>
-                </form>
 
-            </div>
-        </div>
- 
+        <TextModal showModal={showModal} setShowModal={setShowModal}/> 
 
         <div id="add-button-wrapper">
             <button id="add-button" onClick={()=>setShowModal(true)}>
