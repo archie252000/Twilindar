@@ -5,7 +5,7 @@ export const TabPanel = ({ children, value, index}) => {
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
+      style={{display: (value !== index)?"none":"block"}}
       id={`tabpanel-${index}`}
       aria-labelledby={`tab-${index}`}
     >

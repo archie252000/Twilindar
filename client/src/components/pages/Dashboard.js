@@ -83,8 +83,8 @@ export const Dashboard = () => {
         </div> ):
         (<div id="cards-wrapper">
             {
-            tweetsAndThreads.map((obj)=>{
-                return <Card type = {(obj.tweets)?"thread":"tweet"} text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} date={(obj.tweets)?(obj.tweets[0].time):(obj.time)}/>
+            tweetsAndThreads.map((obj, index)=>{
+                return <Card type = {(obj.tweets)?"thread":"tweet"} text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} date={(obj.tweets)?(obj.tweets[0].time):(obj.time)} key={index}/>
             })
             } 
         </div> )}

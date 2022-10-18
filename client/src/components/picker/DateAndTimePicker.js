@@ -1,18 +1,22 @@
-import React from 'react';
+import React, {useState}  from 'react';
 
 import TextField from '@mui/material/TextField';
+import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+
 import config from "../../config/config";
 
 
-export const DateAndTimePicker = ({dateAndTime, setDateAndTime}) => {
-  return (
+export const DateAndTimePicker = ({dateAndTime, changeTweetTextsAtindex, index}) => {
+    const [displayValue, setDisplayValue] = useState(dateAndTime);
+
+    return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DateTimePicker InputProps={{style: {height: '5vh'}}}
-                                    renderInput={(params) => <TextField className='date-picker-text-field' {...params}   sx={{
+                                <DateTimePicker InputProps={{style: {height: '5vh'}}} inputProps={{ readOnly: true }}
+                                    renderInput={(params) => <TextField className='date-picker-text-field' {...params} sx={{
                                             '& .MuiOutlinedInput-root': {
                                                 '& fieldset': {
                                                     borderColor: config.colors["secondaryGray"],
@@ -23,9 +27,10 @@ export const DateAndTimePicker = ({dateAndTime, setDateAndTime}) => {
                                                 },
                                             }
                                         }}/>}
-                                        value={dateAndTime}
+                                        value={displayValue}
                                         onChange={(newDateAndTime) => {
-                                            setDateAndTime(newDateAndTime);
+                                            changeTweetTextsAtindex(index, newDateAndTime);
+                                            setDisplayValue(newDateAndTime);
                                         }}
                                     />
                             </LocalizationProvider>

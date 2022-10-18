@@ -15,29 +15,47 @@ import {scheduleTweet} from "../../actions/schedule";
 export const TextModal = ({showModal, setShowModal}) => {
 
     const [charCount, setCharCount] = useState(0);
-    const [dateAndTime, setDateAndTime] = useState(dayjs('2018-01-01T00:00:00.000Z'));
     const [isThread, setIsThread] = useState(false);
-    const [tweets, setTweets] = useState([{text: "", time: "" }]);
-  
-
+    const [tweets, setTweets] = useState([{text: "", time: (new Date()).toISOString() }]);
     const [value, setValue] = React.useState(0);
+    const [dateAndTime, setDateAndTime] = useState(dayjs((new Date()).toISOString()));
 
-    const currentTweet = useRef(null);
+    const tweetsRef = useRef();
+
+    const changeTweetTextsAtindex = (index, text) => {
+        let newTweet = tweets[index];
+        let newTweetsArray = tweets;
+        newTweet.text = text;
+        newTweetsArray[index] = newTweet;
+        setTweets(newTweetsArray);
+    }
+
+    const changeTweetTimeAtindex = (index, time) => {
+        
+            console.log("is valid");
+            let newTweet = tweets[index];
+            let newTweetsArray = tweets;
+            newTweet.time = time.toISOString();
+            newTweetsArray[index] = newTweet;
+            setTweets(newTweetsArray);
+        
+    }
+
+    const addTweet = ()=>{
+        setTweets([...tweets, {text: "", time: (new Date()).toISOString() }])
+    }
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
   
-    const addTweet = ()=>{
-        console.log(currentTweet.current.value);
-        setTweets([...tweets, {}]);
-    }
 
     useEffect(()=>{
         if(tweets.length > 1)
             setIsThread(true);
         else
             setIsThread(false);
+        
         }, [tweets]);
 
 
@@ -63,21 +81,20 @@ export const TextModal = ({showModal, setShowModal}) => {
                     value={value}
                     onChange={handleChange}
                     variant="scrollable"
-                    scrollButtons="auto"
+                    scrollButtons="auto" 
                     aria-label="scrollable auto tabs example"
                 >
-                        { isThread && (tweets.map((tweet, index) => <Tab label={`${index+1}`} {...tabProps(index)}/>))}
+                        { isThread && (tweets.map(( _ , index) => <Tab label={`${index+1}`} {...tabProps(index)} key={index}/>))}
                 </Tabs>
                 </div>
-                <div className='tweet-text-wrapper'>
-                </div>
                     {tweets.map((tweet, index)=>(
-                        <TabPanel value={value} index={index} key={index.toString()}>
-                            <textarea ref ={currentTweet} className= "tweet-text" maxLength="280" onKeyUp={(e)=>setCharCount(e.target.value.length)}>{index}</textarea>
-                            <DateAndTimePicker dateAndTime={dateAndTime} setDateAndTime={setDateAndTime}/>
+                        <TabPanel value={value} index={index} key={index}>
+                            <textarea  className= "tweet-text" maxLength="280" onChange={()=>console.log(tweets)} onKeyUp={(e)=>{setCharCount(e.target.value.length); changeTweetTextsAtindex(index, e.target.value);}}>{tweets[index].text}</textarea>
+                            <DateAndTimePicker dateAndTime={dayjs(tweets[index].time)} changeTweetTextsAtindex = {changeTweetTimeAtindex} index = {index}/>
                         </TabPanel>
 
                     ))}
+            
             </div>
         
             <div id="count">
@@ -86,10 +103,10 @@ export const TextModal = ({showModal, setShowModal}) => {
             </div>
             <div id="schedule-form-bottom">
                 <div id="add-to-thread-wrapper">
-                    <div id="add-to-thread-button" onClick={()=>addTweet()}>+</div>
+                    <div id="add-to-thread-button" onClick={()=>{addTweet()}}>+</div>
                 </div>
                 <div id="schedule-button-wrapper">
-                    <input id="schedule-button" value="Schedule Tweet" onClick={()=>{console.log(currentTweet)}} readOnly/>
+                    <input id="schedule-button" value="Schedule Tweet" onClick={()=>{console.log(tweetsRef.current);}} readOnly/>
                 </div>
             </div>
         </form>
