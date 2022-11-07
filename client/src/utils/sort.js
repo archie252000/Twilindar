@@ -15,6 +15,5 @@ export const sortTweetsAndThreads = (tweets, threads) => {
 
     const tweetsAndThreads = tweets.concat(threads);
     tweetsAndThreads.sort(comp);
-    console.log(tweetsAndThreads);
     return tweetsAndThreads;
 }

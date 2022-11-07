@@ -22,3 +22,18 @@ export const scheduleTweet = async(tweet) => {
 
 
 }
+
+// Schedule Thread
+export const scheduleThread = async(thread) => {
+    const url = config["baseURL"] + "/api/thread/schedule";
+    const data = {
+        "oauth_token": window.localStorage.getItem("oauth_token"),
+        "oauth_token_secret": window.localStorage.getItem("oauth_token_secret"),
+        "tweets": thread
+    };
+
+    const res = await axios.post(url, data);
+    console.log(res.data);
+    return res.data;
+
+}

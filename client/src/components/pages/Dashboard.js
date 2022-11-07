@@ -3,6 +3,8 @@ import {useNavigate} from 'react-router-dom';
 
 import {Card} from "../card/Card";
 import {TextModal} from "../modal/TextModal";
+import { MoonLoader } from 'react-spinners';
+
 
 
 import {authenticate} from '../../actions/auth';
@@ -10,6 +12,7 @@ import {userData, userTweets, userThreads} from '../../actions/data';
 
 import {sortTweetsAndThreads} from "../../utils/sort";
 
+import config from '../../config/config';
 
 
 export const Dashboard = () => {
@@ -19,6 +22,10 @@ export const Dashboard = () => {
     const [imageURL, setImageURL] = useState("");
     const [tweetsAndThreads, setTweetsAndThreads] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const firstRenderRef = useRef(true);
+   
 
     const navigate = useNavigate();
     
@@ -37,7 +44,7 @@ export const Dashboard = () => {
                  setName(auth_data.name); 
                  setUsername(auth_data.username.toLowerCase());
                  setImageURL(user_data.profile_image_url.replace("_normal", ""));
-                 setTweetsAndThreads(tweets_and_threads)
+                 setTweetsAndThreads(tweets_and_threads);
                 
   
                 } else{
@@ -50,15 +57,23 @@ export const Dashboard = () => {
          } 
      };
 
- 
-
-    useEffect(()=>{
+     
+     
+     
+     useEffect(()=>{
+         
+         if(!window.localStorage.getItem("oauth_token") && !window.localStorage.getItem("oauth_token_secret"))
+         navigate("/");
+         load();
+         
+        },[]);
         
-        if(!window.localStorage.getItem("oauth_token") && !window.localStorage.getItem("oauth_token_secret"))
-            navigate("/");
-        load();
-    },[]);
-    
+     useEffect(()=>{
+        if(firstRenderRef.current == true)
+            firstRenderRef.current = false;
+        else
+            setIsLoading(false);
+     }, [tweetsAndThreads])
     
     return ( 
     <section id="dashboard">
@@ -77,17 +92,25 @@ export const Dashboard = () => {
                 </a>
             </div>
         </div>
-        {(tweetsAndThreads.length == 0)? ( <div id="nothing-scheduled-wrapper">
-            <img src={require("../../assets/NothingFigure.png")} id="nothing-image"/>
-            <img src={require("../../assets/NothingMessage.png")} id="nothing-message"/>
-        </div> ):
-        (<div id="cards-wrapper">
-            {
-            tweetsAndThreads.map((obj, index)=>{
-                return <Card type = {(obj.tweets)?"thread":"tweet"} text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} date={(obj.tweets)?(obj.tweets[0].time):(obj.time)} key={index}/>
-            })
-            } 
-        </div> )}
+        {(isLoading)? (
+        
+            <div className="loading-wrapper">
+                <MoonLoader color={config.colors.primaryBlue} loading={true} /> 
+            </div>
+            ):
+        ((tweetsAndThreads.length != 0)?(
+            <div id="cards-wrapper">
+                {
+                tweetsAndThreads.map((obj, index)=>{
+                    return <Card type = {(obj.tweets)?"thread":"tweet"} text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} date={(obj.tweets)?(obj.tweets[0].time):(obj.time)} key={index} id = {obj._id}/>
+                })
+                } 
+            </div>):(
+            <div id="nothing-scheduled-wrapper">
+                <img src={require("../../assets/NothingFigure.png")} id="nothing-image"/>
+                <img src={require("../../assets/NothingMessage.png")} id="nothing-message"/>
+            </div>
+        ) )}
 
         <TextModal showModal={showModal} setShowModal={setShowModal}/> 
 

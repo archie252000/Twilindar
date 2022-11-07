@@ -1,28 +1,29 @@
-import React, { useState, useRef, useEffect, createRef} from 'react';
+import React, { useState, useEffect} from 'react';
 
-import dayjs, { Dayjs } from 'dayjs';
 import { TabPanel } from '../tabpanel/TabPanel';
 import { DateAndTimePicker } from '../picker/DateAndTimePicker';
+import { TextArea } from './TextArea';
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-import config from "../../config/config";
-
 import {scheduleTweet} from "../../actions/schedule";
+import {scheduleThread} from "../../actions/schedule";
+import { useNavigate } from 'react-router';
+
 
 
 
 export const TextModal = ({showModal, setShowModal}) => {
 
-    const [charCount, setCharCount] = useState(0);
     const [isThread, setIsThread] = useState(false);
     const [tweets, setTweets] = useState([{text: "", time: (new Date()).toISOString() }]);
-    const [value, setValue] = React.useState(0);
-    const [dateAndTime, setDateAndTime] = useState(dayjs((new Date()).toISOString()));
+    const [value, setValue] = useState(0);
 
-    const tweetsRef = useRef();
+    const navigate = useNavigate();    
 
-    const changeTweetTextsAtindex = (index, text) => {
+    const changeTweetTextAtindex = (index, text) => {
+        
         let newTweet = tweets[index];
         let newTweetsArray = tweets;
         newTweet.text = text;
@@ -31,8 +32,8 @@ export const TextModal = ({showModal, setShowModal}) => {
     }
 
     const changeTweetTimeAtindex = (index, time) => {
-        
-            console.log("is valid");
+
+            
             let newTweet = tweets[index];
             let newTweetsArray = tweets;
             newTweet.time = time.toISOString();
@@ -71,8 +72,8 @@ export const TextModal = ({showModal, setShowModal}) => {
   return (
     <div className="modal" style={{display: showModal ? "block" : "none"}}>
     <div className="modal-content">
-        <div id="modal-top" onClick={()=>setShowModal(false)}>
-            <span className="close">&times;</span>
+        <div id="modal-top">
+            <span onClick={()=>{setShowModal(false); setTweets([{text: "", time: (new Date()).toISOString()}])}} className="close">&times;</span>
         </div>
         <form>
             <div className="text-area-wrapper">
@@ -89,24 +90,25 @@ export const TextModal = ({showModal, setShowModal}) => {
                 </div>
                     {tweets.map((tweet, index)=>(
                         <TabPanel value={value} index={index} key={index}>
-                            <textarea  className= "tweet-text" maxLength="280" onChange={()=>console.log(tweets)} onKeyUp={(e)=>{setCharCount(e.target.value.length); changeTweetTextsAtindex(index, e.target.value);}}>{tweets[index].text}</textarea>
-                            <DateAndTimePicker dateAndTime={dayjs(tweets[index].time)} changeTweetTextsAtindex = {changeTweetTimeAtindex} index = {index}/>
+                            <TextArea text={tweet.text} changeTweetTextAtindex={changeTweetTextAtindex} index ={index}/>
+                            <DateAndTimePicker dateAndTime={tweet.time} changeTweetTimeAtindex={changeTweetTimeAtindex} index = {index}/>
+                            <div id="count">
+                                <span id="maximum">/280 characters</span>
+                                <span id="current">{tweet.text.length}</span>
+                            </div>
                         </TabPanel>
 
                     ))}
             
             </div>
         
-            <div id="count">
-                <span id="maximum">/280 characters</span>
-                <span id="current">{charCount}</span>
-            </div>
+
             <div id="schedule-form-bottom">
                 <div id="add-to-thread-wrapper">
                     <div id="add-to-thread-button" onClick={()=>{addTweet()}}>+</div>
                 </div>
                 <div id="schedule-button-wrapper">
-                    <input id="schedule-button" value="Schedule Tweet" onClick={()=>{console.log(tweetsRef.current);}} readOnly/>
+                    <input id="schedule-button" value={isThread?"Schedule Thread":"Schedule Tweet"} onClick={()=>{isThread?scheduleThread(tweets):scheduleTweet(tweets[0]); setShowModal(false); window.location.reload(false);}} readOnly/>
                 </div>
             </div>
         </form>
