@@ -23,6 +23,7 @@ export const Dashboard = () => {
     const [tweetsAndThreads, setTweetsAndThreads] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    
 
     const firstRenderRef = useRef(true);
    
@@ -102,7 +103,13 @@ export const Dashboard = () => {
             <div id="cards-wrapper">
                 {
                 tweetsAndThreads.map((obj, index)=>{
-                    return <Card type = {(obj.tweets)?"thread":"tweet"} text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} date={(obj.tweets)?(obj.tweets[0].time):(obj.time)} key={index} id = {obj._id}/>
+                    return <Card
+                                type = {(obj.tweets)?"thread":"tweet"} 
+                                text = {(obj.tweets)?(obj.tweets[0].text):(obj.text)} 
+                                date={(obj.tweets)?(obj.tweets[0].time):(obj.time)} 
+                                key={String(obj._id)}
+                                data = {obj}
+                            />
                 })
                 } 
             </div>):(
@@ -112,7 +119,10 @@ export const Dashboard = () => {
             </div>
         ) )}
 
-        <TextModal showModal={showModal} setShowModal={setShowModal}/> 
+        <TextModal 
+                showModal={showModal} 
+                setShowModal={setShowModal} 
+                data={{}}/> 
 
         <div id="add-button-wrapper">
             <button id="add-button" onClick={()=>setShowModal(true)}>

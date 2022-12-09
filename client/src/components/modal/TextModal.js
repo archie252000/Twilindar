@@ -14,11 +14,13 @@ import { useNavigate } from 'react-router';
 
 
 
-export const TextModal = ({showModal, setShowModal}) => {
+export const TextModal = ({showModal, setShowModal, data}) => {
 
     const [isThread, setIsThread] = useState(false);
     const [tweets, setTweets] = useState([{text: "", time: (new Date()).toISOString() }]);
     const [value, setValue] = useState(0);
+    const [tabsActive, setTabsActive] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false)
 
     const navigate = useNavigate();    
 
@@ -31,15 +33,12 @@ export const TextModal = ({showModal, setShowModal}) => {
         setTweets(newTweetsArray);
     }
 
-    const changeTweetTimeAtindex = (index, time) => {
-
-            
+    const changeTweetTimeAtindex = (index, time) => {            
             let newTweet = tweets[index];
             let newTweetsArray = tweets;
             newTweet.time = time.toISOString();
             newTweetsArray[index] = newTweet;
             setTweets(newTweetsArray);
-        
     }
 
     const addTweet = ()=>{
@@ -52,14 +51,45 @@ export const TextModal = ({showModal, setShowModal}) => {
   
 
     useEffect(()=>{
+        
         if(tweets.length > 1)
             setIsThread(true);
         else
             setIsThread(false);
-        
+
         }, [tweets]);
 
 
+    useEffect(()=>{
+        
+        setTimeout(()=>{
+            setTabsActive(true)
+        },100)
+        if(!(Object.keys(data).length === 0 && data.constructor === Object)){
+            setIsEditMode(true);
+            if(data.tweets){
+                let Tweets = []
+                data.tweets.map((tweet)=>Tweets.push(
+                    {
+                        text: tweet.text, 
+                        time: (new Date(tweet.time)).toISOString() 
+                    }
+                ))
+            
+                setTweets(Tweets);
+
+            } else {
+                
+               setTweets([{
+                text: data.text,
+                time: (new Date(data.time)).toISOString() 
+           }] )
+            }
+
+        }
+    },[showModal]);
+
+    
     
     const tabProps = (index) => {
         return {
@@ -85,11 +115,11 @@ export const TextModal = ({showModal, setShowModal}) => {
                     scrollButtons="auto" 
                     aria-label="scrollable auto tabs example"
                 >
-                        { isThread && (tweets.map(( _ , index) => <Tab label={`${index+1}`} {...tabProps(index)} key={index}/>))}
+                        { tabsActive && isThread && (tweets.map(( _ , index) => <Tab label={`${index+1}`} {...tabProps(index)} key={index}/>))}
                 </Tabs>
                 </div>
-                    {tweets.map((tweet, index)=>(
-                        <TabPanel value={value} index={index} key={index}>
+                    {tabsActive && tweets.map((tweet, index)=>(
+                        <TabPanel value={value} index={index} key={tweet.time}>
                             <TextArea text={tweet.text} changeTweetTextAtindex={changeTweetTextAtindex} index ={index}/>
                             <DateAndTimePicker dateAndTime={tweet.time} changeTweetTimeAtindex={changeTweetTimeAtindex} index = {index}/>
                             <div id="count">
