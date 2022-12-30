@@ -9,7 +9,10 @@ import Tab from '@mui/material/Tab';
 
 import {scheduleTweet} from "../../actions/schedule";
 import {scheduleThread} from "../../actions/schedule";
-import { useNavigate } from 'react-router';
+
+import {editTweet} from "../../actions/edit";
+import {editThread} from "../../actions/edit";
+
 
 
 
@@ -22,7 +25,17 @@ export const TextModal = ({showModal, setShowModal, data}) => {
     const [tabsActive, setTabsActive] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false)
 
-    const navigate = useNavigate();    
+    const schedule = () => {
+                            isThread?scheduleThread(tweets):scheduleTweet(tweets[0]);
+                            setShowModal(false);
+                            window.location.reload(false);
+                        }
+
+    const edit = () => {
+        isThread?editThread(tweets, data._id):editTweet(tweets[0], data._id);
+        setShowModal(false);
+        window.location.reload(false);
+    }
 
     const changeTweetTextAtindex = (index, text) => {
         
@@ -65,6 +78,7 @@ export const TextModal = ({showModal, setShowModal, data}) => {
         setTimeout(()=>{
             setTabsActive(true)
         },100)
+
         if(!(Object.keys(data).length === 0 && data.constructor === Object)){
             setIsEditMode(true);
             if(data.tweets){
@@ -138,7 +152,7 @@ export const TextModal = ({showModal, setShowModal, data}) => {
                     <div id="add-to-thread-button" onClick={()=>{addTweet()}}>+</div>
                 </div>
                 <div id="schedule-button-wrapper">
-                    <input id="schedule-button" value={isThread?"Schedule Thread":"Schedule Tweet"} onClick={()=>{isThread?scheduleThread(tweets):scheduleTweet(tweets[0]); setShowModal(false); window.location.reload(false);}} readOnly/>
+                    <input id="schedule-button" value={isEditMode?(isThread?"Edit Thread":"Edit Tweet"):(isThread?"Schedule Thread":"Schedule Tweet")} onClick={isEditMode?(edit):(schedule)} readOnly/>
                 </div>
             </div>
         </form>

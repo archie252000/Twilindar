@@ -77,8 +77,8 @@ Router.post("/schedule", [auth], async(req, res) => {
     }
 })
 
-//  @route  DELETE api/tweet/delete/:id
-//  @desc   delete scheduled tweet
+//  @route  DELETE api/thread/delete/:id
+//  @desc   delete scheduled thread
 //  @access Private   
 
 Router.delete("/delete/:id", [auth], async(req, res) => {
@@ -110,25 +110,24 @@ Router.put("/edit/:id", [auth], async(req, res) => {
 
         threadData = {}
 
-        threadData.user = user._id;
-
         tweets = [];
-
         req.body.tweets.forEach((tweet) => {
 
             tweetData = {};
             if (tweet.time)
-                tweetData.time = time;
+                tweetData.time = tweet.time;
 
             if (tweet.media)
-                tweetData.media = media;
+                tweetData.media = tweet.media;
 
             if (tweet.text)
-                tweetData.text = text;
+                tweetData.text = tweet.text;
 
             tweets.push(tweetData)
 
         });
+
+        threadData.tweets = tweets;
 
         await Thread.updateOne({
             _id: req.params.id,

@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {deleteTweet} from '../../actions/delete'
+import {deleteTweet, deleteThread} from '../../actions/delete'
 import { TextModal } from '../modal/TextModal';
 
 export const Card = ({type, text, date, data}) => {
@@ -8,8 +8,8 @@ export const Card = ({type, text, date, data}) => {
 
 
 
-    const deleteTweetOrThread = ()=> {
-        deleteTweet(data._id); 
+    const deleteTweetOrThread = ()=> { 
+        (type === "tweet")?(deleteTweet(data._id)):(deleteThread(data._id)); 
         window.location.reload(false);
     }
 
